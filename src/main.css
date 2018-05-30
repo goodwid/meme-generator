@@ -2,3 +2,10 @@ h1 {
   color: darksalmon;
 }
 
+input {
+  border-radius: 6px;
+}
+
+.output {
+  font-family: Impact, Charcoal, sans-serif;
+}
