@@ -1,5 +1,5 @@
 h1 {
-  color: darksalmon;
+
 }
 
 input {
@@ -8,4 +8,20 @@ input {
 
 .output {
   font-family: Impact, Charcoal, sans-serif;
+}
+
+.image-container {
+  position: relative;
+}
+
+.image-container * {
+  position: absolute;
+  top: 0;
+}
+
+.image-container h1 {
+  color: white;
+  text-shadow: 2px 2px 0 #000;
+  z-index: 5;
+  left: 40px;
 }

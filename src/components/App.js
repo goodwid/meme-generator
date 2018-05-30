@@ -10,23 +10,41 @@ export default class App extends Component {
       header: 'header',
       footer: 'footer',
     };
-    this.handleChange = this.handleChange.bind(this)
-    
+    ['handleChange', 'handleUpload', 'handleExport'].forEach(f => {
+      this[f] = this[f].bind(this);
+    });
   }
+  
   handleChange(item) {
     return ({ target }) => {
-      const state = {}
+      const state = {};
       state[item] = target.value;
       this.setState(state);
     };
   }
 
+  handleUpload({ target }) {
+    const reader = new FileReader();
+    reader.readAsDataURL(target.files[0]);
+
+    reader.onload = () => {
+      this.setState({ image: reader.result });
+    };
+  }
+
+  handleExport() {
+    dom2image.toBlob(this.imageExport)
+      .then (blob => {
+        fileSaver.saveAs(blob, 'david-meme.png');
+      });
+  }
+
   render() {
-    const { header, footer } = this.state;
+    const { header, footer, image } = this.state;
   
     return (
       <main>
-        <h1>Welcome to David's meme generator!</h1>
+        <h1>Welcome to Davids meme generator!</h1>
         header:
         <br/>
         <input
@@ -43,9 +61,35 @@ export default class App extends Component {
         />
         <br/>
         <hr/>
-        <div className="output">
-          {header}
+        <section>
+          <div>
+            <label>
+              Image source:
+              <input onChange={this.handleChange('image')}/>
+            </label>
+          </div>
+          <div>
+            <label>
+              Image Upload:
+              <input
+                type="file"
+                onChange={this.handleUpload}
+              />
+            </label>
+          </div>
+          <div>
+            <button onClick = {this.handleExport}>
+              Export
+            </button>
+          </div>
+        </section>
+        <div className="image-container"
+          ref={node => this.imageExport = node}>
+          <h1>{header}</h1>
+          {/* <h1>{footer}</h1> */}
+          <img src={image} />
         </div>
+
       </main> 
     );
   }
